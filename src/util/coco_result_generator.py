@@ -1,5 +1,6 @@
 import json
 
+
 class COCOResultGenerator:
     def __init__(self):
         self.result_obj = []
@@ -39,3 +40,4 @@ class COCOResultGenerator:
         with open(result_file, 'w') as f:
             print('dumping {} results to {}'.format(len(self.result_obj), result_file))
             json.dump(self.result_obj, f, indent=4)
+

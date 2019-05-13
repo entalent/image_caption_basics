@@ -61,3 +61,4 @@ class BasePipeline:
         state_dict = torch.load(save_path)
         print('loaded model at {}'.format(save_path))
         return state_dict
+
