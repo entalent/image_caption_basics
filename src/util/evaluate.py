@@ -1,5 +1,17 @@
 import json
 
+try:
+    from pycocotools.coco import COCO
+    from pycocoevalcap.eval import COCOEvalCap
+except:
+    print('import from coco-caption failed')
+
+try:
+    from .customjson import dump_custom
+    dump_func = dump_custom
+except:
+    dump_func = json.dump
+
 
 class COCOResultGenerator:
     def __init__(self):
@@ -35,9 +47,35 @@ class COCOResultGenerator:
     def dump_annotation_and_output(self, annotation_file, result_file):
         with open(annotation_file, 'w') as f:
             print('dumping {} annotations to {}'.format(len(self.annotation_obj['annotations']), annotation_file))
-            json.dump(self.annotation_obj, f, indent=4)
+            dump_func(self.annotation_obj, f, indent=4)
 
         with open(result_file, 'w') as f:
             print('dumping {} results to {}'.format(len(self.result_obj), result_file))
-            json.dump(self.result_obj, f, indent=4)
+            dump_func(self.result_obj, f, indent=4)
 
+
+def eval(ann_file, res_file):
+    coco = COCO(ann_file)
+    cocoRes = coco.loadRes(res_file)
+    # create cocoEval object by taking coco and cocoRes
+    # cocoEval = COCOEvalCap(coco, cocoRes)
+    cocoEval = COCOEvalCap(coco, cocoRes, use_scorers=['Bleu', 'METEOR', 'ROUGE_L', 'CIDEr'])
+
+    # evaluate on a subset of images by setting
+    # cocoEval.params['image_id'] = cocoRes.getImgIds()
+    # please remove this line when evaluating the full validation set
+    cocoEval.params['image_id'] = cocoRes.getImgIds()
+
+    # evaluate results
+    # SPICE will take a few minutes the first time, but speeds up due to caching
+    cocoEval.evaluate()
+
+    all_score = {}
+    # print output evaluation scores
+    for metric, score in cocoEval.eval.items():
+        # print('%s: %.4f' % (metric, score))
+        all_score[metric] = score
+
+    img_scores = [cocoEval.imgToEval[key] for key in cocoEval.imgToEval.keys()]
+
+    return all_score

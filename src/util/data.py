@@ -1,9 +1,12 @@
+import time
+from abc import abstractmethod
 from collections import defaultdict
 
 import torch.utils.data
 import torch.utils.data
+from tqdm import tqdm
 
-from util.customjson import *
+from .customjson import *
 
 class ImageItem(JSONSerializable):
     def __init__(self, image_id=None, image_filename=None):
@@ -12,22 +15,22 @@ class ImageItem(JSONSerializable):
 
 class SentenceItem(JSONSerializable):
     def __init__(self, sentence_id=None, raw=None, words=None, token_ids=None):
-        super().__init__()
+        # super().__init__()
         # token_ids can be None
         self.sentence_id, self.raw, self.words, self.token_ids = \
             sentence_id, raw, words, token_ids
 
 class ImageSentencePair(JSONSerializable):
     def __init__(self, image=None, sentence=None, split=None):
-        super().__init__()
+        # super().__init__()
         self.image, self.sentence, self.split = image, sentence, split
 
 class CaptionItem(JSONSerializable):
     def __init__(self, image=None, sentences=None, split=None):
-        super().__init__()
+        # super().__init__()
         self.image, self.sentences, self.split = image, sentences, split
 
-JSONSerializable.register_cls(ImageItem, 'II', {'image_id': 'ii', 'image_filename': 'if'})
+JSONSerializable.register_cls(ImageItem, 'II', {'image_id': 'id', 'image_filename': 'file'})
 JSONSerializable.register_cls(SentenceItem, 'SI', {})
 JSONSerializable.register_cls(ImageSentencePair, 'ISP', {'image': 'i', 'sentence': 's', 'split': 'sp'})
 JSONSerializable.register_cls(CaptionItem, 'CI', {'image': 'i', 'sentences': 'ss', 'split': 'sp'})
@@ -38,6 +41,8 @@ class CaptionDataset(torch.utils.data.Dataset):
         dataset_name = kwargs['dataset_name']
         split = kwargs.get('split', 'all')      # default: all
         vocab = kwargs.get('vocab', None)
+
+        print('loading dataset {}, split {}, vocab size {}'.format(dataset_name, split, None if vocab is None else len(vocab)))
 
         self._kwargs = kwargs
         self.dataset_name = dataset_name
@@ -52,21 +57,36 @@ class CaptionDataset(torch.utils.data.Dataset):
         self.caption_item_split = defaultdict(list)
         self.image_sentence_pair_split = defaultdict(list)
 
+        start_time = time.time()
         self.load()
+
+        for caption_item in self.caption_item_list:
+            split = caption_item.split
+            self.image_list.append(caption_item.image)
+            self.caption_item_split[split].append(caption_item)
+            self.sentence_list.extend(caption_item.sentences)
+            for sent in caption_item.sentences:
+                pair = ImageSentencePair(image=caption_item.image, sentence=sent, split=split)
+                self.image_sentence_pair_list.append(pair)
+                self.image_sentence_pair_split[split].append(pair)
+        print('load used {:.3f}s'.format(time.time() - start_time))
 
         self.image_id_map = dict((image_item.image_id, image_item) for image_item in self.image_list)
         self.sentence_id_map = dict((sentence_item.sentence_id, sentence_item) for sentence_item in self.sentence_list)
         self.image_id_map_2 = dict((caption_item.image.image_id, caption_item) for caption_item in self.caption_item_list)
 
+    @abstractmethod
     def __len__(self):
         pass
 
+    @abstractmethod
     def __getitem__(self, index):
         pass
 
+    @abstractmethod
     def load(self):
         """
-        init self.image_list, self.sentence_list, self.caption_item_list, self.image_sentence_pair_list
+        init self.caption_item_list (of all splits)
         :return:
         """
         pass

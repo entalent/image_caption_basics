@@ -1,4 +1,4 @@
-from util.data import JSONSerializable
+from .data import JSONSerializable
 
 class Vocabulary(JSONSerializable):
     pad_token, pad_token_id = '<pad>', 0

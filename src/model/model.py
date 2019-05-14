@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 
-from ..util import arg_type
+from util import arg_type
 
 
 BeamCandidate = namedtuple('BeamCandidate',
@@ -32,9 +32,11 @@ class LanguageModel(nn.Module):
         for i in range(max_length):
             word_id_batch = input_sentence[:, i]
             output, state, step_metadata = self.step(input_feature, word_id_batch, state, **kwargs)    # output: (batch_size, vocab_size)
+            assert output.shape[0] == batch_size and output.shape[1] == len(self.vocab), \
+                'expected output shape: {}, get shape {}'.format((batch_size, len(self.vocab)), output.shape)
             all_outputs.append(output)
 
-        all_outputs = torch.stack([all_outputs], 1)     # (batch_size, max_len, vocab_size)
+        all_outputs = torch.stack(all_outputs, 1)     # (batch_size, max_len, vocab_size)
         return all_outputs
 
     def sample(self, input_feature, max_length, sample_max, **kwargs):
@@ -44,14 +46,14 @@ class LanguageModel(nn.Module):
         :param max_length:
         :param sample_max:
         :param kwargs:
-        :return: log_prob_seq (np.array), word_id_seq (np.array), all_metadata (list)
+        :return: log_prob_seq (torch.Tensor), word_id_seq (np.array), all_metadata (list)
         """
 
         start_word_id, end_word_id = self.vocab.start_token_id, self.vocab.end_token_id
 
         batch_size, input_feature = self.prepare_feat(input_feature, **kwargs)
 
-        last_state = self.init_state(input_feature, **kwargs)
+        state = self.init_state(input_feature, **kwargs)
         log_prob_seq = []
         log_prob_sum = []
 
@@ -65,14 +67,14 @@ class LanguageModel(nn.Module):
         for t in range(max_length):
             output, state, step_metadata = self.step(input_feature=input_feature,
                                                      last_word_id_batch=last_word_id_batch,
-                                                     last_state=last_state, **kwargs)
+                                                     last_state=state, **kwargs)
             log_prob = F.log_softmax(output, -1)    # (batch_size, vocab_size)
 
             if sample_max:
                 word_log_prob, word_id = torch.max(log_prob, dim=-1)    # word_id: (batch_size,)
             else:
-                word_id = torch.multinominal(torch.exp(log_prob), num_samples=1)    # word_id: (batch_size, 1)
-                word_log_prob = log_prob.gather(dim=1, index=word_id)               # word_log_prob: (batch_size, 1)
+                word_id = torch.multinomial(torch.exp(log_prob), num_samples=1)    # word_id: (batch_size, 1)
+                word_log_prob = log_prob.gather(dim=1, index=word_id)              # word_log_prob: (batch_size, 1)
                 word_id = word_id.squeeze(1)                    # word_id: (batch_size,)
                 word_log_prob = word_log_prob.squeeze(1)        # word_log_prob: (batch_size,)
 
@@ -96,7 +98,7 @@ class LanguageModel(nn.Module):
         log_prob_seq = torch.stack(log_prob_seq, dim=1)     # (batch_size, seq_len)
         word_id_seq = torch.stack(word_id_seq, dim=1)       # (batch_size, seq_len)
 
-        log_prob_seq = log_prob_seq.detach().cpu().numpy()
+        # log_prob_seq = log_prob_seq.detach().cpu().numpy()
         word_id_seq = word_id_seq.detach().cpu().numpy()
 
         return log_prob_seq, word_id_seq, all_metadata
@@ -109,6 +111,7 @@ class LanguageModel(nn.Module):
         :param beam_size:
         :param kwargs:
         :return: log_prob_seq (np.array), word_id_seq (np.array), all_metadata (list)
+        TODO: change log_prob_seq to torch.Tensor
         """
         start_word_id, end_word_id = self.vocab.start_token_id, self.vocab.end_token_id
 
@@ -137,7 +140,7 @@ class LanguageModel(nn.Module):
                     for k in range(beam_size):
                         log_prob, word_id = output_sorted[k], index_sorted[k]  # tensor, tensor
                         word_id = int(word_id.numpy())
-                        log_prob = float(log_prob.numpy())
+                        # log_prob = float(log_prob.numpy())
                         tmp_candidates.append(BeamCandidate(state,
                                                log_prob_sum + log_prob, log_prob_seq + [log_prob],
                                                word_id, word_id_seq + [word_id],
@@ -169,7 +172,7 @@ class LanguageModel(nn.Module):
         pass
 
     @abstractmethod
-    @arg_type(last_word_id_batch=[np.array, list, tuple])
+    @arg_type(last_word_id_batch=[np.ndarray, list, tuple])
     def step(self, input_feature, last_word_id_batch, last_state, **kwargs):
         """
         :param input_feature: returned by sample_prepare_feat, batched

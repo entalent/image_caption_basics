@@ -51,6 +51,7 @@ class BasePipeline:
             f.write('args: ' + str(self.args) + '\n')
         self.zip_source_code(folder='.', target_zip_file=os.path.join(self.save_folder, 'src.zip'))
 
+
     def save_model(self, save_path, state_dict):
         if not os.path.exists(os.path.dirname(save_path)):
             os.makedirs(os.path.dirname(save_path))
