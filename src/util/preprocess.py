@@ -15,7 +15,7 @@ def default_tokenize_func(sent):
 
 
 def preprocess_captions(dataset_name, caption_list, word_count_th=5, tokenize_func=default_tokenize_func):
-    print('preprocessing dataset {}'.format(dataset_name))
+    print('preprocessing captions in dataset {}'.format(dataset_name))
     word_counter = Counter()
     sentence_length_counter = Counter()
 
@@ -124,8 +124,8 @@ def preprocess_ngrams(caption_items, split, vocab):
         if split == caption_item.split or split == 'all':
             ref_words = []
             for sent in caption_item.sentences:
-                tmp_tokens = sent.words + [Vocabulary.end_token_id]
-                tmp_tokens = [_ if _ in vocab.word2idx else Vocabulary.unk_token for _ in tmp_tokens]
+                tmp_tokens = sent.words + [Vocabulary.end_token]    # must add <end> token
+                tmp_tokens = [_ if _ in vocab.word2idx else Vocabulary.unk_token for _ in tmp_tokens]   # filter unknown words
                 ref_words.append(' '.join(tmp_tokens))
             refs_words.append(ref_words)
             count_imgs += 1

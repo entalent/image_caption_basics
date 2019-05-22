@@ -53,7 +53,12 @@ class CaptionDataset(util.CaptionDataset):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.max_sent_length = kwargs['max_sent_length']
-        self.feat_file = r'/media/wentian/sda1/caption_features/cocotalk_fc/feats_fc.h5'
+
+        if self.dataset_name == 'coco':
+            self.feat_file = r'/media/wentian/sda1/caption_features/cocotalk_fc/feats_fc.h5'
+        elif self.dataset_name == 'flickr30k':
+            self.feat_file = r'/media/wentian/sda1/caption_features/features_resnet101_flickr30k'
+
         for sent in self.sentence_list:
             sent.token_ids = [self.vocab.get_index(w) for w in sent.words]
 
@@ -70,7 +75,8 @@ class CaptionDataset(util.CaptionDataset):
     def load(self):
         # with open('../data/preprocessed/dataset_coco.json', 'r') as f:
         #     self.caption_item_list = util.load_custom(f)['caption_item']
-        obj = self.load_json('../data/preprocessed/dataset_coco.json')
+        dataset_file = '../data/preprocessed/dataset_{}.json'.format(self.dataset_name)
+        obj = self.load_json(dataset_file)
         self.caption_item_list = obj['caption_item']
 
     def __len__(self):
@@ -99,7 +105,7 @@ class CaptionDataset(util.CaptionDataset):
 
 def get_dataloader(dataset_name, split, vocab, **kwargs):
     dataset = CaptionDataset(dataset_name=dataset_name, split=split, vocab=vocab,
-                             max_sent_length=kwargs.get('max_sent_length', 17))
+                             max_sent_length=kwargs.get('max_sent_length', 18))
     dataloader = torch.utils.data.dataloader.DataLoader(dataset=dataset,
                                                         batch_size=kwargs.get('batch_size', 128),
                                                         shuffle=kwargs.get('shuffle', True),
@@ -117,11 +123,15 @@ class DemoPipeline(util.BasePipeline):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
+        parser.add_argument('-dataset', default='coco', type=str)
         parser.add_argument('-saved_model', default='', type=str)
 
         parser.add_argument('-max_epoch', default=40, type=int)
         parser.add_argument('-sc_after', default=30, type=int)
-        parser.add_argument('-max_sample_seq_len', default=25, type=int)    # maximum length during sampling
+        parser.add_argument('-max_sample_seq_len', default=18, type=int)    # maximum length during sampling
+        parser.add_argument('-max_sent_length', default=18, type=int)       # maximum length of provided sentence
+
+        parser.add_argument('-grad_clip', default=0.1, type=float)
 
     def run(self):
         self.train()
@@ -131,9 +141,10 @@ class DemoPipeline(util.BasePipeline):
         print('using args:')
         print(json.dumps(self.args.__dict__, indent=4))
 
-        vocab = util.load_custom('../data/vocab/vocab_coco.json')
-        train_dataloader = get_dataloader('coco', 'train', vocab)
-        test_dataloader = get_dataloader('coco', 'test', vocab, batch_size=1, shuffle=False)
+        dataset_name = self.args.dataset
+        vocab = util.load_custom('../data/vocab/vocab_{}.json'.format(dataset_name))
+        train_dataloader = get_dataloader(dataset_name, 'train', vocab, max_sent_length=self.args.max_sent_length)
+        test_dataloader = get_dataloader(dataset_name, 'test', vocab, batch_size=1, shuffle=False)
 
         model = LSTMLanguageModel(vocab=vocab)
         model.to(device)
@@ -145,7 +156,7 @@ class DemoPipeline(util.BasePipeline):
         self.global_step = 0
 
         if len(self.args.saved_model) > 0:
-            state_dict = self.load_model('/media/wentian/sdb2/work/image_caption_basics/save/2019-05-13_22-44-50/saved_models/checkpoint_4')
+            state_dict = self.load_model(self.args.saved_model)
             model.load_state_dict(state_dict['model'])
             optimizer.load_state_dict(state_dict['optimizer'])
             scheduler.load_state_dict(state_dict['scheduler'])
@@ -153,6 +164,7 @@ class DemoPipeline(util.BasePipeline):
             self.global_step = state_dict['global_step']
             print('starting at epoch {}, global step {}'.format(self.epoch, self.global_step))
 
+        max_sent_length = self.args.max_sent_length
         max_sample_seq_len = self.args.max_sample_seq_len
         max_epoch = self.args.max_epoch
         sc_after = self.args.sc_after
@@ -174,6 +186,8 @@ class DemoPipeline(util.BasePipeline):
 
                 optimizer.zero_grad()
 
+                add_log = self.global_step % 20 == 0
+
                 if not self_critical_flag:
                     # mask = util.get_word_mask(tokens.shape, sent_length)
                     token_input = tokens[:, :-1].contiguous()
@@ -185,8 +199,9 @@ class DemoPipeline(util.BasePipeline):
                     loss.backward()
                     optimizer.step()
 
-                    loss_scalar = loss.detach().cpu()
-                    self.writer.add_scalar('loss/cross_entropy', loss_scalar, global_step=self.global_step)
+                    if add_log:
+                        loss_scalar = loss.detach().cpu()
+                        self.writer.add_scalar('loss/cross_entropy', loss_scalar, global_step=self.global_step)
                 else:
                     start_time = time.time()
                     sample_logprob, sample_seq, _ = model.sample(input_feature=feat, max_length=max_sample_seq_len,
@@ -194,40 +209,51 @@ class DemoPipeline(util.BasePipeline):
 
                     sample_time = time.time() - start_time; start_time = time.time()
 
+                    model.train(False)
                     with torch.no_grad():
-                        model.train(False)
                         greedy_logprob, greedy_seq, _ = model.sample(input_feature=feat, max_length=max_sample_seq_len,
                                                                      sample_max=True)
-                        model.train(True)
+                    model.train(True)
 
                     greedy_time = time.time() - start_time; start_time = time.time()
 
+                    # gts_raw = [
+                    #     [s.raw + ' ' + util.Vocabulary.end_token
+                    #     for s in train_dataloader.dataset.get_caption_item_by_image_id(id).sentences]
+                    #     for id in image_id
+                    # ]
+
                     gts_raw = [
-                        [s.raw + ' ' + util.Vocabulary.end_token
+                        [' '.join(s.words[:max_sent_length]) + ' ' + util.Vocabulary.end_token
                         for s in train_dataloader.dataset.get_caption_item_by_image_id(id).sentences]
                         for id in image_id
                     ]
 
                     reward = util.reward.get_self_critical_reward(sample_seq, greedy_seq, gts_raw,
-                                                         weights={'bleu': 0.5, 'cider': 0.5}, vocab=vocab)
+                                                                  weights={'bleu': 0.5, 'cider': 0.5}, vocab=vocab)
+                    # reward = util.reward.get_self_critical_reward(sample_seq, greedy_seq, gts_raw,
+                    #                                               weights={'bleu': 1.0, 'cider': 0.0}, vocab=vocab)
                     loss = util.reward.rl_criterion(log_prob=sample_logprob, generated_seq=sample_seq, reward=reward)
 
                     compute_loss_time = time.time() - start_time; start_time = time.time()
 
                     loss.backward()
+                    util.clip_gradient(optimizer, self.args.grad_clip)
                     optimizer.step()
 
-                    if self.global_step % 20 == 0:
-                        all_lr = {}
-                        for i, param_group in enumerate(optimizer.param_groups):
-                            all_lr[str(i)] = param_group['lr']
-                        self.writer.add_scalars('learning_rate', all_lr, global_step=self.global_step)
+                    if add_log:
+                        avg_reward = np.mean(reward[:, 0])
+                        self.writer.add_scalar('average_reward', avg_reward, global_step=self.global_step)
                         loss_scalar = loss.detach().cpu()
                         self.writer.add_scalar('loss/self_critical', loss_scalar, global_step=self.global_step)
                         backward_time = time.time() - start_time
                         self.writer.add_scalars('sc_time', {'sample': sample_time, 'greedy': greedy_time,
                                                             'compute_loss': compute_loss_time, 'backward': backward_time}, self.global_step)
-
+                if add_log:
+                    all_lr = {}
+                    for i, param_group in enumerate(optimizer.param_groups):
+                        all_lr[str(i)] = param_group['lr']
+                    self.writer.add_scalars('learning_rate', all_lr, global_step=self.global_step)
 
                 self.global_step += 1
 
@@ -238,8 +264,6 @@ class DemoPipeline(util.BasePipeline):
                             state_dict={'model': model.state_dict(),
                                         'optimizer': optimizer.state_dict(), 'scheduler': scheduler.state_dict(),
                                         'epoch': self.epoch, 'global_step': self.global_step})
-
-
 
     def test(self, test_dataloader, model, vocab):
         result_generator = util.COCOResultGenerator()
@@ -274,14 +298,8 @@ class DemoPipeline(util.BasePipeline):
         metrics = util.eval(ann_file, result_file)
         self.writer.add_scalars(main_tag='metric/', tag_scalar_dict=metrics, global_step=self.global_step)
 
-
-    def test_data(self):
-        print('testing dataloader...')
-        vocab = util.load_custom('../data/vocab/vocab_coco.json')
-        train_dataloader = get_dataloader('coco', 'train', vocab, num_workers=1, collate_fn=lambda x: x)
-        for i, batch_data in tqdm(enumerate(train_dataloader), ncols=64, total=len(train_dataloader)):
-            pass
-
+    def eval(self):
+        pass
 
 def main():
     p = DemoPipeline()

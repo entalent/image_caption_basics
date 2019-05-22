@@ -71,9 +71,18 @@ class CaptionDataset(torch.utils.data.Dataset):
                 self.image_sentence_pair_split[split].append(pair)
         print('load used {:.3f}s'.format(time.time() - start_time))
 
+        info = []
+        for split in self.caption_item_split.keys():
+            info.append('{}: {}'.format(split, len(self.caption_item_split[split])))
+        print('splits: {}'.format(' '.join(info)))
+
         self.image_id_map = dict((image_item.image_id, image_item) for image_item in self.image_list)
         self.sentence_id_map = dict((sentence_item.sentence_id, sentence_item) for sentence_item in self.sentence_list)
         self.image_id_map_2 = dict((caption_item.image.image_id, caption_item) for caption_item in self.caption_item_list)
+        self.sentence_id_map_2 = {}
+        for caption_item in self.caption_item_list:
+            for sent in caption_item.sentences:
+                self.sentence_id_map_2[sent.sentence_id] = caption_item
 
     @abstractmethod
     def __len__(self):
@@ -99,6 +108,9 @@ class CaptionDataset(torch.utils.data.Dataset):
 
     def get_caption_item_by_image_id(self, image_id):
         return self.image_id_map_2[int(image_id)]
+
+    def get_caption_item_by_sentence_id(self, sentence_id):
+        return self.sentence_id_map_2[int(sentence_id)]
 
 
 def read_binary_blob(file_name):

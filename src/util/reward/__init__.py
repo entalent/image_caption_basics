@@ -1,5 +1,9 @@
+import time
+from collections import OrderedDict
+
 import numpy as np
 import torch
+from joblib import Parallel, delayed
 
 from .. import arg_type, trim_generated_tokens
 from ..vocabulary import Vocabulary
@@ -23,24 +27,32 @@ def init_scorer(df):
 
 def get_scores(res, gts, weights):
     """
+        :param res: ['candidate1', 'candidate2']
+        :param gts: {0: ['sent1', 'sent2'], 1: ['sent3', 'sent4']}
+        :param weights: {'cider': 0.5, 'bleu': 0.5}
+        :return:
+        """
 
-    :param res: ['candidate1', 'candidate2']
-    :param gts: {0: ['sent1', 'sent2'], 1: ['sent3', 'sent4']}
-    :param weights: {'cider': 0.5, 'bleu': 0.5}
-    :return:
-    """
-    score = 0.
-
-    if weights['cider'] > 0:
+    def _compute_cider(gts, res, weight):
         res_ = [{'image_id': i, 'caption': [res[i]]} for i in range(len(res))]
         _, score_cider = ciderD_scorer.compute_score(gts, res_)
-        score = weights['cider'] * score_cider + score
+        return score_cider * weight
 
-    if weights['bleu'] > 0:
+    def _compute_bleu(gts, res, weight):
         res__ = {i: [res[i]] for i in range(len(res))}
         _, score_bleu = bleu4_scorer.compute_score(gts, res__)
         score_bleu4 = np.array(score_bleu[3])
-        score = weights['bleu'] * score_bleu4 + score
+        return score_bleu4 * weight
+
+    score = 0.
+
+    # single thread
+    if weights['cider'] > 0:
+        score_cider = _compute_cider(gts, res, weights['cider'])
+        score = score_cider + score
+    if weights['bleu'] > 0:
+        score_bleu4 = _compute_bleu(gts, res, weights['cider'])
+        score = score_bleu4 + score
 
     return score
 
@@ -75,8 +87,15 @@ def get_self_critical_reward(sample_result_tokens, greedy_result_tokens, gts_raw
         weight_sum += weights[key]
     assert weight_sum == 1.0, 'invalid reward weight: {}'.format(weights)
 
-    sample_result_str = [_to_str(_, vocab) for _ in sample_result_tokens]
-    greedy_result_str = [_to_str(_, vocab) for _ in greedy_result_tokens]
+    # sample_result_str = [_to_str(_, vocab) for _ in sample_result_tokens]
+    sample_result_str = OrderedDict()
+    for i, _ in enumerate(sample_result_tokens):
+        sample_result_str[i] = _to_str(_, vocab)
+
+    # greedy_result_str = [_to_str(_, vocab) for _ in greedy_result_tokens]
+    greedy_result_str = OrderedDict()
+    for i, _ in enumerate(greedy_result_tokens):
+        greedy_result_str[i] = _to_str(_, vocab)
 
     gts = {i: gts_raw[i] for i in range(batch_size)}
 

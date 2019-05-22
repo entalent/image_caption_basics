@@ -1,4 +1,5 @@
 import inspect
+import pickle
 import time
 from collections.abc import Iterable
 
@@ -69,3 +70,33 @@ def trim_generated_tokens(tokens):
     return tokens[start_index : end_index]
 
 
+def clip_gradient(optimizer, grad_clip):
+    for group in optimizer.param_groups:
+        for param in group['params']:
+            param.grad.data.clamp_(-grad_clip, grad_clip)
+
+
+def read_glove_embedding(vocab):
+    num_embeddings = len(vocab)
+    embedding_dim = 300
+
+    with open('../data/glove.6B.300d.preprocessed.pkl', 'rb') as f:
+        glove_embedding = pickle.load(f)
+    cnt = 0
+    embedding_matrix = np.random.normal(0, 1, size=(num_embeddings, embedding_dim))
+    for word in glove_embedding:
+        if word in vocab.word2idx:
+            cnt += 1
+            index = vocab.get_index(word)
+            embedding_matrix[index] = glove_embedding[word]
+    print('{} word total, {} words in glove'.format(len(vocab), cnt))
+    return torch.Tensor(embedding_matrix)
+
+
+def calc_perplexity(log_prob_seq):
+    s = sum(log_prob_seq)
+    n = len(log_prob_seq)
+    return -1 * s / (n + 1e-12)
+
+
+custom_collate_fn = lambda x: list(zip(*x))

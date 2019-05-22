@@ -23,7 +23,7 @@ class BasePipeline:
         self.run_name = run_name
         self.save_folder = save_folder
 
-        self.writer = SummaryWriter(log_dir=os.path.join(save_folder))
+        self.writer = SummaryWriter(log_dir=os.path.join(save_folder, 'log'))
 
     def add_arguments(self, parser):
         parser.add_argument('-run_name', default='', type=str)

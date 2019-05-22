@@ -26,12 +26,26 @@ class LanguageModel(nn.Module):
         batch_size, input_feature = self.prepare_feat(input_feature, **kwargs)
         assert len(input_sentence.shape) == 2 and input_sentence.shape[0] == batch_size
         max_length = input_sentence.shape[1]
+        device = input_sentence.device
+
+        ss_prob = kwargs.get('ss_prob', 0.0)
 
         state = self.init_state(input_feature, **kwargs)
         all_outputs = []
         for i in range(max_length):
-            word_id_batch = input_sentence[:, i]
-            output, state, step_metadata = self.step(input_feature, word_id_batch, state, **kwargs)    # output: (batch_size, vocab_size)
+            if self.training and i >= 1 and ss_prob > 0:    # scheduled sampling
+                sample_mask = torch.zeros(batch_size).uniform_(0, 1) < ss_prob
+                if sample_mask.sum() == 0:
+                    word_id_batch = input_sentence[:, i]
+                else:
+                    sample_ind = sample_mask.nonzero().view(-1).to(device)
+                    word_id_batch = input_sentence[:, i]            # (batch_size,)
+                    prob_prev = torch.exp(F.log_softmax(all_outputs[-1], dim=-1))
+                    word_id_batch.index_copy_(0, sample_ind, torch.multinomial(prob_prev, 1).view(-1).index_select(0, sample_ind))
+            else:
+                word_id_batch = input_sentence[:, i]
+
+            output, state, step_metadata = self.step(input_feature, word_id_batch, state, **kwargs)    # output: (batch_size, vocab_size) WITHOUT SOFTMAX
             assert output.shape[0] == batch_size and output.shape[1] == len(self.vocab), \
                 'expected output shape: {}, get shape {}'.format((batch_size, len(self.vocab)), output.shape)
             all_outputs.append(output)
@@ -39,7 +53,7 @@ class LanguageModel(nn.Module):
         all_outputs = torch.stack(all_outputs, 1)     # (batch_size, max_len, vocab_size)
         return all_outputs
 
-    def sample(self, input_feature, max_length, sample_max, **kwargs):
+    def sample(self, input_feature, max_length, sample_max=True, **kwargs):
         """
 
         :param input_feature:
