@@ -70,6 +70,11 @@ def trim_generated_tokens(tokens):
     return tokens[start_index : end_index]
 
 
+def tokens_to_raw_sentence(tokens, vocab):
+    tokens_trimmed = trim_generated_tokens(tokens)
+    return ' '.join(vocab.get_word(i) for i in tokens_trimmed)
+
+
 def clip_gradient(optimizer, grad_clip):
     for group in optimizer.param_groups:
         for param in group['params']:

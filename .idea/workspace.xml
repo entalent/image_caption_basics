@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/test.py" line="79" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="1800254a-f1b0-482d-8ced-95587324291e" name="Default" comment="add self critical training">
-      <change afterPath="$PROJECT_DIR$/src/demo/preprocess_feat.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/demo/preprocess_glove.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/demo/sent_retrieval.py" afterDir="false" />
+    <list default="true" id="1800254a-f1b0-482d-8ced-95587324291e" name="Default" comment="add (corrected) self critical training">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/demo/demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/demo/demo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/demo/preprocess_coco.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/demo/preprocess_coco.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/demo/demo1.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/demo/demo1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/preprocess.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/preprocess.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/reward/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/reward/__init__.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,31 +20,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/demo/demo1.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/demo/demo1_r.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+            <state relative-caret-position="95">
+              <caret line="17" column="18" lean-forward="true" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#420#3865#0" />
-                <element signature="e#3884#3972#0" />
-                <element signature="e#4011#5295#0" />
-                <element signature="e#5343#5731#0" />
+                <element signature="e#421#1723#0" />
+                <element signature="e#1770#3636#0" />
+                <element signature="e#3686#7663#0" />
+                <element signature="e#7728#8399#0" />
+                <element signature="e#8520#9973#0" />
+                <element signature="e#10019#23144#0" />
+                <element signature="e#31629#33762#0" />
+                <element signature="e#33915#36616#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/demo/demo.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/demo/demo1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="45" column="35" lean-forward="true" selection-start-line="18" selection-end-line="45" selection-end-column="35" />
+            <state relative-caret-position="376">
+              <caret line="503" selection-start-line="503" selection-end-line="503" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#1763#3913#0" />
-                <element signature="e#3978#4631#0" />
+                <element signature="e#489#1791#0" />
+                <element signature="e#1838#3704#0" />
+                <element signature="e#3754#7731#0" />
+                <element signature="e#7796#8467#0" />
+                <element signature="e#8588#10041#0" />
+                <element signature="e#10087#23212#0" />
               </folding>
             </state>
           </provider>
@@ -82,6 +84,7 @@
       <find>utils.</find>
       <find>max_sample</find>
       <find>util.eval</find>
+      <find>restval</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -109,24 +112,26 @@
         <option value="$PROJECT_DIR$/src/util/reward/__init__.py" />
         <option value="$PROJECT_DIR$/src/demo/demo.py" />
         <option value="$PROJECT_DIR$/src/demo/preprocess_glove.py" />
-        <option value="$PROJECT_DIR$/src/util/__init__.py" />
         <option value="$PROJECT_DIR$/src/demo/FCModel.py" />
         <option value="$PROJECT_DIR$/src/model/model.py" />
         <option value="$PROJECT_DIR$/src/util/data.py" />
         <option value="$PROJECT_DIR$/src/demo/sent_retrieval.py" />
-        <option value="$PROJECT_DIR$/src/demo/demo1_r.py" />
         <option value="$PROJECT_DIR$/src/demo/preprocess_feat.py" />
         <option value="$PROJECT_DIR$/src/util/preprocess.py" />
         <option value="$PROJECT_DIR$/src/demo/preprocess_coco.py" />
+        <option value="$PROJECT_DIR$/src/test.py" />
+        <option value="$PROJECT_DIR$/src/demo/util/sent_lemmatize.py" />
+        <option value="$PROJECT_DIR$/src/util/__init__.py" />
+        <option value="$PROJECT_DIR$/src/demo/demo1_r.py" />
         <option value="$PROJECT_DIR$/src/demo/demo1.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="31" />
-    <option name="y" value="-9" />
-    <option name="width" value="1939" />
-    <option name="height" value="1049" />
+    <option name="x" value="83" />
+    <option name="y" value="-12" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -157,6 +162,13 @@
               <item name="image_caption_basics" type="b2602c69:ProjectViewProjectNode" />
               <item name="image_caption_basics" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="demo" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="image_caption_basics" type="b2602c69:ProjectViewProjectNode" />
+              <item name="image_caption_basics" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -173,13 +185,13 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../IdeaProjects/untitled" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Python" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -202,7 +214,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.preprocess_coco">
+  <component name="RunManager" selected="Python.test">
     <configuration name="demo" type="PythonConfigurationType" factoryName="Python">
       <module name="image_caption_basics" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -261,7 +273,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/demo/demo1_r.py" />
-      <option name="PARAMETERS" value="train -run_name transfer -target flickr30k" />
+      <option name="PARAMETERS" value="train -run_name transfer_flickr30k -target flickr30k" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -269,7 +281,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="preprocess_coco" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="preprocess_coco" type="PythonConfigurationType" factoryName="Python">
       <module name="image_caption_basics" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -379,6 +391,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="image_caption_basics" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.demo1" />
       <item itemvalue="Python.sent_retrieval" />
@@ -388,10 +422,11 @@
       <item itemvalue="Python.preprocess_coco" />
       <item itemvalue="Python.preprocess_glove" />
       <item itemvalue="Python.preprocess_feat" />
+      <item itemvalue="Python.test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.preprocess_coco" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.preprocess_feat" />
         <item itemvalue="Python.preprocess_glove" />
       </list>
@@ -423,7 +458,8 @@
       <workItem from="1558312559612" duration="11363000" />
       <workItem from="1558420084426" duration="1048000" />
       <workItem from="1558434550012" duration="642000" />
-      <workItem from="1558486926103" duration="296000" />
+      <workItem from="1558486926103" duration="22580000" />
+      <workItem from="1558575014868" duration="19751000" />
     </task>
     <task id="LOCAL-00001" summary="add readme">
       <created>1557492855112</created>
@@ -439,11 +475,18 @@
       <option name="project" value="LOCAL" />
       <updated>1557841093010</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add (corrected) self critical training">
+      <created>1558487256078</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1558487256078</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="220149000" />
+    <option name="totallyTimeSpent" value="262184000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -460,11 +503,11 @@
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.16689008" />
+      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.14075068" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.24220963" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2776204" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.4022663" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.42776203" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
@@ -474,8 +517,8 @@
       <window_info anchor="bottom" id="Terminal" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="12" weight="0.12606232" />
-      <window_info anchor="bottom" id="Python Console" order="13" weight="0.33427763" />
-      <window_info anchor="bottom" id="File Transfer" order="14" visible="true" weight="0.22804533" />
+      <window_info anchor="bottom" id="Python Console" order="13" visible="true" weight="0.04674221" />
+      <window_info anchor="bottom" id="File Transfer" order="14" weight="0.15864022" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="15" weight="0.2776204" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -484,33 +527,6 @@
       <window_info anchor="right" id="Remote Host" order="4" weight="0.3297587" />
       <window_info anchor="right" id="Database" order="5" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.16085792" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.4022663" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3186969" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
-      <window_info anchor="bottom" id="LuaCheck" order="7" />
-      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.12606232" />
-      <window_info anchor="bottom" id="Python Console" order="13" weight="0.33427763" />
-      <window_info anchor="bottom" id="File Transfer" order="14" weight="0.22804533" />
-      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="15" weight="0.2776204" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" weight="0.31903484" />
-      <window_info anchor="right" id="Remote Host" order="4" weight="0.3297587" />
-      <window_info anchor="right" id="Database" order="5" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -521,12 +537,14 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add readme" />
     <MESSAGE value="add self critical training" />
-    <option name="LAST_COMMIT_MESSAGE" value="add self critical training" />
+    <MESSAGE value="add (corrected) self critical training" />
+    <option name="LAST_COMMIT_MESSAGE" value="add (corrected) self critical training" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/image_caption_basics$preprocess_feat.coverage" NAME="preprocess_feat Coverage Results" MODIFIED="1557996168493" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
     <SUITE FILE_PATH="coverage/image_caption_basics$demo.coverage" NAME="demo Coverage Results" MODIFIED="1557902557160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/image_caption_basics$demo1_r.coverage" NAME="demo1_r Coverage Results" MODIFIED="1558270917142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/image_caption_basics$demo1_r.coverage" NAME="demo1_r Coverage Results" MODIFIED="1558492199578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/image_caption_basics$test.coverage" NAME="test Coverage Results" MODIFIED="1558613853285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/image_caption_basics$demo1.coverage" NAME="demo1 Coverage Results" MODIFIED="1558170620628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
     <SUITE FILE_PATH="coverage/image_caption_basics$preprocess_glove.coverage" NAME="preprocess_glove Coverage Results" MODIFIED="1557914335559" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
     <SUITE FILE_PATH="coverage/image_caption_basics$sent_retrieval.coverage" NAME="sent_retrieval Coverage Results" MODIFIED="1558263610887" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
@@ -534,6 +552,13 @@
     <SUITE FILE_PATH="coverage/image_caption_basics$sent_retrieval_eval.coverage" NAME="sent_retrieval eval Coverage Results" MODIFIED="1558247895129" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
   </component>
   <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>os.getpid()</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
     <expressions id="evaluateExpression">
       <expression>
         <expression-string>len(iterable)</expression-string>
@@ -583,55 +608,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1787854931/json/decoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="334" selection-start-line="334" selection-end-line="334" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1787854931/json/encoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="179" selection-start-line="179" selection-end-line="179" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/561458389/sys.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="92" selection-start-line="92" selection-end-line="92" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/util/reward/ciderD/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="55" selection-start-column="55" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/util/reward/bleu/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="10" lean-forward="true" selection-start-column="10" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/functools.pyi">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/optim/lr_scheduler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="122" column="8" selection-start-line="122" selection-start-column="8" selection-end-line="122" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/optim/optimizer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="37">
@@ -837,13 +813,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/nn/modules/module.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="720" selection-start-line="720" selection-end-line="720" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/serialization.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="124">
@@ -855,17 +824,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="157">
           <caret line="55" selection-start-line="55" selection-end-line="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/util/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-            <element signature="e#2900#3460#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -893,26 +851,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
           <caret line="65" column="8" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/sent_retrieval.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1292">
-          <caret line="71" column="82" selection-start-line="71" selection-start-column="82" selection-end-line="71" selection-end-column="82" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/util/data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -970,13 +908,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/demo1_r.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14573">
-          <caret line="772" selection-start-line="772" selection-end-line="772" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/demo/demo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -989,16 +920,129 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/demo1.py">
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/nn/modules/module.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+        <state relative-caret-position="86">
+          <caret line="720" selection-start-line="720" selection-end-line="720" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/nltk/corpus/reader/wordnet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="1883" selection-start-line="1883" selection-end-line="1883" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/nltk/stem/wordnet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/nltk/tag/mapping.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="111" column="28" lean-forward="true" selection-start-line="111" selection-start-column="28" selection-end-line="111" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/nltk/tag/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="122" column="31" selection-start-line="122" selection-start-column="31" selection-end-line="122" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/util/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-126">
+          <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#420#3865#0" />
-            <element signature="e#3884#3972#0" />
-            <element signature="e#4011#5295#0" />
-            <element signature="e#5343#5731#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/tqdm/_monitor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/demo/sent_retrieval.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="505">
+          <caret line="71" column="82" selection-start-line="71" selection-start-column="82" selection-end-line="71" selection-end-column="82" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-551">
+          <caret line="10" selection-start-line="10" selection-end-line="10" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/demo/util/sent_lemmatize.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/util/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="74" column="62" selection-start-line="74" selection-start-column="62" selection-end-line="74" selection-end-column="62" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#2900#3460#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/demo/demo1_r.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="17" column="18" lean-forward="true" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#421#1723#0" />
+            <element signature="e#1770#3636#0" />
+            <element signature="e#3686#7663#0" />
+            <element signature="e#7728#8399#0" />
+            <element signature="e#8520#9973#0" />
+            <element signature="e#10019#23144#0" />
+            <element signature="e#31629#33762#0" />
+            <element signature="e#33915#36616#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/demo/demo1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="376">
+          <caret line="503" selection-start-line="503" selection-end-line="503" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#489#1791#0" />
+            <element signature="e#1838#3704#0" />
+            <element signature="e#3754#7731#0" />
+            <element signature="e#7796#8467#0" />
+            <element signature="e#8588#10041#0" />
+            <element signature="e#10087#23212#0" />
           </folding>
         </state>
       </provider>

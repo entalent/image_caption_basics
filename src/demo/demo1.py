@@ -4,27 +4,103 @@ import pickle
 import sys
 import time
 from functools import lru_cache
+import tempfile
 
 sys.path.append(os.getcwd())
 sys.path.append('./src')
 sys.path.append(r'/media/wentian/sdb2/work/coco-caption-master')
 
 import torch.utils.data
-import torch.nn as nn
 import h5py
 from tqdm import tqdm
-import numpy as np
+
 import util
 import util.reward
-from model.model import LanguageModel
+from model.model import *
+from demo.util.sent_lemmatize import get_sent_attrs
 
-from FCModel import FCModel
+from sent_retrieval import SentenceMatcher, retrieve_target
+
+
+class FCModel(nn.Module):
+    def __init__(self, input_size, hidden_size, drop_prob_lm=0.5):
+        print('init FCModel')
+        super(FCModel, self).__init__()
+        self.input_encoding_size = input_size
+        self.rnn_size = hidden_size
+        self.drop_prob_lm = drop_prob_lm
+        self.hidden_size = hidden_size
+
+        # Build a LSTM
+        self.i2h = nn.Linear(self.input_encoding_size, 5 * self.rnn_size)
+        self.h2h = nn.Linear(self.rnn_size, 5 * self.rnn_size)
+        self.dropout = nn.Dropout(self.drop_prob_lm)
+
+    def forward(self, xt, state):
+        all_input_sums = self.i2h(xt) + self.h2h(state[0])
+        sigmoid_chunk = all_input_sums.narrow(1, 0, 3 * self.rnn_size)
+        sigmoid_chunk = F.sigmoid(sigmoid_chunk)
+        in_gate = sigmoid_chunk.narrow(1, 0, self.rnn_size)
+        forget_gate = sigmoid_chunk.narrow(1, self.rnn_size, self.rnn_size)
+        out_gate = sigmoid_chunk.narrow(1, self.rnn_size * 2, self.rnn_size)
+
+        in_transform = torch.max(all_input_sums.narrow(1, 3 * self.rnn_size, self.rnn_size),
+            all_input_sums.narrow(1, 4 * self.rnn_size, self.rnn_size))
+        next_c = forget_gate * state[1] + in_gate * in_transform
+        next_h = out_gate * F.tanh(next_c)
+
+        # output = self.dropout(next_h)
+        state = next_h, next_c
+        return state
+
+
+class LSTMLanguageModel(LanguageModel):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        embedding = kwargs.get('pretrained_embedding', None)
+        self.use_pretrained_embedding = embedding is not None
+
+        self.image_embedding = nn.Linear(in_features=2048, out_features=300)
+        self.input_embedding = nn.Embedding(num_embeddings=len(self.vocab), embedding_dim=300, padding_idx=0, _weight=embedding)
+        # self.lstm = nn.LSTMCell(input_size=300, hidden_size=512)
+        self.lstm = FCModel(input_size=300, hidden_size=512)
+        self.output_embedding = nn.Linear(in_features=512, out_features=len(self.vocab))
+        self.dropout = nn.Dropout(0.5)
+
+        self.init_weights()
+
+    def init_weights(self):
+        initrange = 0.1
+        if not self.use_pretrained_embedding:
+            self.input_embedding.weight.data.uniform_(-initrange, initrange)
+        self.output_embedding.bias.data.fill_(0)
+        self.output_embedding.weight.data.uniform_(-initrange, initrange)
+
+    def prepare_feat(self, input_feature, **kwargs):
+        batch_size = len(input_feature)
+        prepared_feat = self.image_embedding(input_feature)
+        return batch_size, prepared_feat
+
+    def init_state(self, input_feature, **kwargs):
+        device = input_feature.device
+        batch_size = input_feature.shape[0]
+        h_0 = torch.zeros((batch_size, self.lstm.hidden_size)).to(device)
+        return self.lstm(input_feature, (h_0, h_0))
+
+    def step(self, input_feature, last_word_id_batch, last_state, **kwargs):
+        device = input_feature.device
+        last_word_id_batch = torch.LongTensor(np.array(last_word_id_batch).astype(np.int64)).to(device)
+        emb = self.input_embedding(last_word_id_batch)
+        h, c = self.lstm(emb, last_state)
+        output = self.dropout(h)
+        output = self.output_embedding(output)
+        return output, (h, c), None
 
 
 class CaptionDataset(util.CaptionDataset):
     def __init__(self, **kwargs):
-        self.iter_mode = kwargs.get('iter_mode', 'single')
-        assert self.iter_mode in ['single', 'group']
+        self.iter_mode = kwargs.get('iter_mode', 'single',)
+        assert self.iter_mode in ['single', 'group', 'retrieved']
         self.max_sent_length = kwargs['max_sent_length']
         self.image_mode = kwargs.get('image_mode', 'fc_feat')
         self.use_restval = kwargs.get('use_restval', True)
@@ -66,16 +142,23 @@ class CaptionDataset(util.CaptionDataset):
             return len(self.image_sentence_pair_split[self.split])
         elif self.iter_mode == 'group':
             return len(self.caption_item_split[self.split])
+        elif self.iter_mode == 'retrieved':
+            return len(self.retrieve_result)
 
     def __getitem__(self, index):
         if self.iter_mode == 'single':
             pair = self.image_sentence_pair_split[self.split][index]
             image_item = pair.image
             sents = [pair.sentence]
-        else:
+        elif self.iter_mode == 'group':
             i = self.caption_item_split[self.split][index]
             image_item = i.image
             sents = i.sentences
+        elif self.iter_mode == 'retrieved':
+            result = self.retrieve_result[index]
+            image_id, sent_id = result['image_id'], result['retrieved_sent_id']
+            image_item = self.image_id_map[image_id]
+            sents = [self.sentence_id_map[_] for _ in sent_id[:5]]
 
         fixed_length = self.max_sent_length + 2  # with <start> and <end>
 
@@ -104,65 +187,8 @@ class CaptionDataset(util.CaptionDataset):
         # to avoid memory leak, use torch.Tensor
         # return image_item.image_id, torch.Tensor(feat), torch.LongTensor(tokens_fixedlen), sent_length, sent.raw
 
-
-class Args:
-    def __init__(self, d):
-        for k, v in d.items():
-            self.__setattr__(k, v)
-
-
-# wrapper class to use the FCModel from https://github.com/ruotianluo/self-critical.pytorch
-class FCModelWrapper(nn.Module):
-    def __init__(self, vocab_size, seq_length):
-        super().__init__()
-        opt_dict = {
-            'vocab_size': vocab_size,
-            'input_encoding_size': 512,
-            'rnn_type': 'lstm',
-            'rnn_size': 512,
-            'num_layers': 1,
-            'drop_prob_lm': 0.5,
-            'seq_length': seq_length,
-            'fc_feat_size': 2048
-        }
-        opt = Args(opt_dict)
-
-        self.model = FCModel(opt)
-
-    def forward(self, input_feature, input_sentence, ss_prob):
-        fc_feats = input_feature
-        att_feats = None
-        seq = input_sentence
-        self.model.ss_prob = ss_prob
-        return self.model._forward(fc_feats=fc_feats, att_feats=att_feats, seq=seq)
-
-    def sample(self, input_feature, max_length, sample_max=True):
-        _opt = {'sample_max': sample_max}
-        seq, seqLogProbs = self.model._sample(fc_feats=input_feature, att_feats=None, opt=_opt)
-        seq = seq.detach().cpu().numpy()
-        return seqLogProbs, seq, None
-
-    def sample_beam(self, input_feature, max_length=20, beam_size=5):
-        _opt = {'beam_size': beam_size}
-        seq, seqLogProbs = self.model._sample_beam(fc_feats=input_feature, att_feats=None, opt=_opt)
-        seq = seq.detach().cpu().numpy()
-        return seqLogProbs, seq, None
-
-
-# loss from https://github.com/ruotianluo/self-critical.pytorch
-class LanguageModelCriterion(nn.Module):
-    def __init__(self):
-        super(LanguageModelCriterion, self).__init__()
-
-    def forward(self, input, target, mask):
-        # truncate to the same size
-        target = target[:, :input.size(1)]
-        mask =  mask[:, :input.size(1)]
-
-        output = -input.gather(2, target.unsqueeze(2)).squeeze(2) * mask
-        output = torch.sum(output) / torch.sum(mask)
-
-        return output
+    def set_retrieve_result(self, sent_retrieve_result):
+        self.retrieve_result = sent_retrieve_result
 
 
 def get_dataloader(dataset_name, split, vocab, **kwargs):
@@ -227,11 +253,13 @@ class DemoPipeline(util.BasePipeline):
         super().add_arguments(parser)
         parser.add_argument('action', default='train', type=str)
         parser.add_argument('-dataset', default='coco', type=str)
+        parser.add_argument('-vocab', default='vocab_coco.json', type=str)
         parser.add_argument('-saved_model', default='', type=str)
 
+        parser.add_argument('-batch_size', default=25, type=int)            # for training
         parser.add_argument('-max_epoch', default=40, type=int)
         parser.add_argument('-sc_after', default=30, type=int)
-        parser.add_argument('-max_sample_seq_len', default=16, type=int)    # maximum length during sampling
+        parser.add_argument('-max_sample_seq_len', default=18, type=int)    # maximum length during sampling
         parser.add_argument('-max_sent_length', default=16, type=int)       # maximum length of provided sentence
 
         parser.add_argument('-grad_clip', default=0.1, type=float)
@@ -242,7 +270,6 @@ class DemoPipeline(util.BasePipeline):
         parser.add_argument('-ss_prob_max', default=0.25, type=int)
 
         parser.add_argument('-beam_size', default=1, type=int)  # beam size during test
-
 
     def run(self):
         print('using args:')
@@ -256,20 +283,20 @@ class DemoPipeline(util.BasePipeline):
     def train(self):
         dataset_name = self.args.dataset
 
-        # vocab = util.load_custom('../data/vocab/vocab_{}.json'.format(dataset_name))
-        # merged vocab
-        vocab_path = '../data/vocab/vocab_coco.json'
+        vocab_path = os.path.join('../data/vocab', self.args.vocab)
+        if not os.path.exists(vocab_path):
+            vocab_path = self.args.vocab
+        assert os.path.exists(vocab_path), 'vocab {} not found'.format(self.args.vocab)
         print('loading vocab from {}'.format(vocab_path))
         vocab = util.load_custom(vocab_path)
-        # pretrained_embedding = util.read_glove_embedding(vocab)
+        pretrained_embedding = util.read_glove_embedding(vocab)
 
-        train_dataloader = get_dataloader(dataset_name, 'train', vocab, batch_size=10, max_sent_length=self.args.max_sent_length, iter_mode='group')
-        test_dataloader = get_dataloader(dataset_name, 'val', vocab, batch_size=10, shuffle=False, iter_mode='group')
+        train_dataloader = get_dataloader(dataset_name, 'train', vocab, batch_size=self.args.batch_size,
+                                          max_sent_length=self.args.max_sent_length, iter_mode='group')
+        test_dataloader = get_dataloader(dataset_name, 'test', vocab, batch_size=16, shuffle=False, iter_mode='group')
 
-        # model = LSTMLanguageModel(vocab=vocab, pretrained_embedding=pretrained_embedding)
-        model = FCModelWrapper(vocab_size=len(vocab), seq_length=self.args.max_sent_length)
+        model = LSTMLanguageModel(vocab=vocab, pretrained_embedding=pretrained_embedding)
         model.to(device)
-        self.crit = LanguageModelCriterion()
         optimizer = torch.optim.Adam([{'params': model.parameters(), 'lr': 5e-4}])
         scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3,
                                                     gamma=0.8)
@@ -320,14 +347,14 @@ class DemoPipeline(util.BasePipeline):
                 add_log = self.global_step % 20 == 0
 
                 if not self_critical_flag:
-                    mask = util.get_word_mask(tokens.shape, sent_length)
-                    token_input = tokens
+                    # mask = util.get_word_mask(tokens.shape, sent_length)
+                    token_input = tokens[:, :-1].contiguous()
                     token_target = tokens[:, 1:].contiguous()
 
                     outputs = model.forward(input_feature=feat, input_sentence=token_input, ss_prob=ss_prob)
 
-                    mask = torch.FloatTensor(mask).to(outputs.device)
-                    loss = self.crit(outputs, token_target, mask[:, 1:])
+                    # outputs: without softmax
+                    loss = util.masked_cross_entropy(outputs, token_target, sent_length - 1)
 
                     loss.backward()
                     util.clip_gradient(optimizer, self.args.grad_clip)
@@ -399,15 +426,14 @@ class DemoPipeline(util.BasePipeline):
 
                 self.global_step += 1
 
-            # if self_critical_flag or (self.epoch % 5 == 0) or (self.epoch + 1 == sc_after and sc_after >= 0):
-            self.test(test_dataloader, model, vocab)
+            if self_critical_flag or (self.epoch % 5 == 0) or (self.epoch + 1 == sc_after and sc_after >= 0):
+                self.test(test_dataloader, model, vocab)
 
             self.save_model(save_path=os.path.join(self.save_folder, 'saved_models', 'checkpoint_{}'.format(self.epoch)),
                             state_dict={'model': model.state_dict(),
                                         'optimizer': optimizer.state_dict(), 'scheduler': scheduler.state_dict(),
                                         'epoch': self.epoch, 'global_step': self.global_step})
             self.epoch += 1
-
 
     def test(self, test_dataloader, model, vocab):
         result_generator = util.COCOResultGenerator()
@@ -429,18 +455,15 @@ class DemoPipeline(util.BasePipeline):
                 feat_index += len(sent_ids[batch_index])
 
                 # feat = feats[batch_index].unsqueeze(0)
-                log_prob_seq, word_id_seq, _ = model.sample(input_feature=feat,
-                                                            max_length=self.args.max_sample_seq_len + 1)
+                log_prob_seq, word_id_seq, _ = model.sample_beam(input_feature=feat, max_length=20, beam_size=beam_size)
 
-                word_id_seq = word_id_seq.reshape(-1)
-                log_prob_seq = log_prob_seq.detach().cpu().numpy()
                 words = util.trim_generated_tokens(word_id_seq)
                 words = [vocab.get_word(i) for i in words]
                 sent = ' '.join(words)
-                result_generator.add_output(image_id, sent, metadata=None)
-                                            # metadata={'word_id': word_id_seq,
-                                            #           'log_prob_seq': log_prob_seq,
-                                            #           'perplexity': util.calc_perplexity(log_prob_seq)})
+                result_generator.add_output(image_id, sent,
+                                            metadata={'word_id': word_id_seq,
+                                                      'log_prob_seq': log_prob_seq,
+                                                      'perplexity': util.calc_perplexity(log_prob_seq)})
 
             # print(word_id_seq, sent)
 
@@ -449,8 +472,35 @@ class DemoPipeline(util.BasePipeline):
         metric_file = os.path.join(self.save_folder, 'metric_{}.json'.format(self.epoch))
         result_generator.dump_annotation_and_output(ann_file, result_file)
 
+        # eval_cmd = '{} /home/wentian/work/coco-caption-master/eval_eng.py {} {} {}'\
+        #     .format(sys.executable, ann_file, result_file, metric_file)
+        # os.system(eval_cmd)
+
         metrics = util.eval(ann_file, result_file)
         self.writer.add_scalars(main_tag='metric/', tag_scalar_dict=metrics, global_step=self.global_step)
+
+    def evaluate(self):
+        dataset_name = self.args.dataset
+        vocab_path = '../data/vocab/vocab_coco.json'
+        vocab = util.load_custom(vocab_path)
+        test_dataloader = get_dataloader(dataset_name, 'test', vocab, batch_size=32, shuffle=False, iter_mode='group')
+
+        model = LSTMLanguageModel(vocab=vocab)
+        model.to(device)
+        optimizer = torch.optim.Adam([{'params': model.parameters(), 'lr': 5e-4}])
+        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3,
+                                                    gamma=0.8)
+
+        state_dict = self.load_model(self.args.saved_model)
+        model.load_state_dict(state_dict['model'])
+        optimizer.load_state_dict(state_dict['optimizer'])
+        scheduler.load_state_dict(state_dict['scheduler'])
+        self.epoch = state_dict['epoch']
+        self.global_step = state_dict['global_step']
+
+        print('test starting at epoch {}, global step {}'.format(self.epoch, self.global_step))
+
+        self.test(test_dataloader, model, vocab)
 
 
 def main():
