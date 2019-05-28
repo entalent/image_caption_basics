@@ -1,10 +1,8 @@
 import json
 import os
-import pickle
 import sys
 import time
 from functools import lru_cache
-import tempfile
 
 sys.path.append(os.getcwd())
 sys.path.append('./src')
@@ -17,9 +15,6 @@ from tqdm import tqdm
 import util
 import util.reward
 from model.model import *
-from demo.util.sent_lemmatize import get_sent_attrs
-
-from sent_retrieval import SentenceMatcher, retrieve_target
 
 
 class FCModel(nn.Module):

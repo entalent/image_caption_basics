@@ -4,10 +4,13 @@
     <bookmark url="file://$PROJECT_DIR$/src/test.py" line="79" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1800254a-f1b0-482d-8ced-95587324291e" name="Default" comment="add (corrected) self critical training">
+    <list default="true" id="1800254a-f1b0-482d-8ced-95587324291e" name="Default" comment="added demo1.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/demo/demo1.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/demo/demo1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/demo/preprocess_coco.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/demo/preprocess/preprocess_coco.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/demo/preprocess_feat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/demo/preprocess/preprocess_feat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/demo/preprocess_glove.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/demo/preprocess/preprocess_glove.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/demo/sent_retrieval.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,39 +23,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/demo/demo1_r.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="17" column="18" lean-forward="true" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+            <state relative-caret-position="342">
+              <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#421#1723#0" />
-                <element signature="e#1770#3636#0" />
-                <element signature="e#3686#7663#0" />
-                <element signature="e#7728#8399#0" />
-                <element signature="e#8520#9973#0" />
-                <element signature="e#10019#23144#0" />
-                <element signature="e#31629#33762#0" />
-                <element signature="e#33915#36616#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/demo/demo1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="503" selection-start-line="503" selection-end-line="503" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-                <element signature="e#489#1791#0" />
-                <element signature="e#1838#3704#0" />
-                <element signature="e#3754#7731#0" />
-                <element signature="e#7796#8467#0" />
-                <element signature="e#8588#10041#0" />
-                <element signature="e#10087#23212#0" />
               </folding>
             </state>
           </provider>
@@ -122,24 +99,24 @@
         <option value="$PROJECT_DIR$/src/test.py" />
         <option value="$PROJECT_DIR$/src/demo/util/sent_lemmatize.py" />
         <option value="$PROJECT_DIR$/src/util/__init__.py" />
-        <option value="$PROJECT_DIR$/src/demo/demo1_r.py" />
         <option value="$PROJECT_DIR$/src/demo/demo1.py" />
+        <option value="$PROJECT_DIR$/src/util/sent_lemmatize.py" />
+        <option value="$PROJECT_DIR$/src/demo/demo1_r.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="83" />
-    <option name="y" value="-12" />
-    <option name="width" value="1938" />
-    <option name="height" value="1048" />
+    <option name="x" value="103" />
+    <option name="y" value="151" />
+    <option name="width" value="1550" />
+    <option name="height" value="839" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -163,6 +140,18 @@
               <item name="image_caption_basics" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="demo" type="462c0819:PsiDirectoryNode" />
+              <item name="preprocess" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="image_caption_basics" type="b2602c69:ProjectViewProjectNode" />
+              <item name="image_caption_basics" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="image_caption_basics" type="b2602c69:ProjectViewProjectNode" />
+              <item name="image_caption_basics" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -170,6 +159,48 @@
               <item name="image_caption_basics" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
+              <item name="reward" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="image_caption_basics" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Code\Projects\PyCharmProjects\image_caption_basics" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="image_caption_basics" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Code\Projects\PyCharmProjects\image_caption_basics" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="image_caption_basics" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Code\Projects\PyCharmProjects\image_caption_basics" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="demo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="image_caption_basics" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Code\Projects\PyCharmProjects\image_caption_basics" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="model" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="image_caption_basics" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Code\Projects\PyCharmProjects\image_caption_basics" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="util" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="image_caption_basics" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Code\Projects\PyCharmProjects\image_caption_basics" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="util" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="reward" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -185,7 +216,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../IdeaProjects/untitled" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -194,12 +225,14 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\util" />
+      <recent name="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\demo\preprocess" />
+      <recent name="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\demo" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\demo" />
       <recent name="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\util" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\demo" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -214,7 +247,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.demo1_r">
     <configuration name="demo" type="PythonConfigurationType" factoryName="Python">
       <module name="image_caption_basics" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -294,7 +327,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/demo/preprocess_coco.py" />
+      <option name="SCRIPT_NAME" value="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\demo\preprocess\preprocess_coco.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -316,7 +349,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/demo/preprocess_feat.py" />
+      <option name="SCRIPT_NAME" value="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\demo\preprocess\preprocess_feat.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -338,7 +371,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/demo/preprocess_glove.py" />
+      <option name="SCRIPT_NAME" value="D:\Code\Projects\PyCharmProjects\image_caption_basics\src\demo\preprocess\preprocess_glove.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -459,7 +492,8 @@
       <workItem from="1558420084426" duration="1048000" />
       <workItem from="1558434550012" duration="642000" />
       <workItem from="1558486926103" duration="22580000" />
-      <workItem from="1558575014868" duration="19751000" />
+      <workItem from="1558575014868" duration="32218000" />
+      <workItem from="1559011030189" duration="505000" />
     </task>
     <task id="LOCAL-00001" summary="add readme">
       <created>1557492855112</created>
@@ -482,11 +516,18 @@
       <option name="project" value="LOCAL" />
       <updated>1558487256078</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added demo1.py">
+      <created>1558659344187</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1558659344187</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="262184000" />
+    <option name="totallyTimeSpent" value="275156000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -499,15 +540,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="1" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="2" visible="true" weight="0.14075068" />
+      <window_info content_ui="combo" id="Project" order="2" visible="true" weight="0.19906166" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.4022663" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.42776203" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.19830029" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.6458923" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
@@ -516,8 +556,8 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.12606232" />
-      <window_info anchor="bottom" id="Python Console" order="13" visible="true" weight="0.04674221" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="12" visible="true" weight="0.14872521" />
+      <window_info anchor="bottom" id="Python Console" order="13" weight="0.04674221" />
       <window_info anchor="bottom" id="File Transfer" order="14" weight="0.15864022" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="15" weight="0.2776204" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -538,12 +578,13 @@
     <MESSAGE value="add readme" />
     <MESSAGE value="add self critical training" />
     <MESSAGE value="add (corrected) self critical training" />
-    <option name="LAST_COMMIT_MESSAGE" value="add (corrected) self critical training" />
+    <MESSAGE value="added demo1.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="added demo1.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/image_caption_basics$preprocess_feat.coverage" NAME="preprocess_feat Coverage Results" MODIFIED="1557996168493" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
     <SUITE FILE_PATH="coverage/image_caption_basics$demo.coverage" NAME="demo Coverage Results" MODIFIED="1557902557160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/image_caption_basics$demo1_r.coverage" NAME="demo1_r Coverage Results" MODIFIED="1558492199578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/image_caption_basics$demo1_r.coverage" NAME="demo1_r Coverage Results" MODIFIED="1558705424465" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/image_caption_basics$test.coverage" NAME="test Coverage Results" MODIFIED="1558613853285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/image_caption_basics$demo1.coverage" NAME="demo1 Coverage Results" MODIFIED="1558170620628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
     <SUITE FILE_PATH="coverage/image_caption_basics$preprocess_glove.coverage" NAME="preprocess_glove Coverage Results" MODIFIED="1557914335559" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/" />
@@ -554,7 +595,47 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
       <expression>
-        <expression-string>os.getpid()</expression-string>
+        <expression-string>self.epoch</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(sents_and_attrs_2)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>target_sent_id</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>target_captions</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(target_sent_id), len(target_captions)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ta</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>raw[batch_index]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>raw</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>sent_ids</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
@@ -608,20 +689,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/optim/optimizer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/util/reward/bleu/bleu_scorer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="39" column="4" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/autograd/grad_mode.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
@@ -657,7 +724,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/preprocess_glove.py">
+    <entry file="file://$PROJECT_DIR$/src/demo/preprocess/preprocess_glove.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
           <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="50" />
@@ -777,25 +844,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/FCModel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4332">
-          <caret line="240" selection-start-line="240" selection-end-line="240" />
-          <folding>
-            <element signature="e#308#346#0" expanded="true" />
-            <element signature="e#592#823#0" />
-            <element signature="e#877#978#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/util/evaluate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="69" column="80" lean-forward="true" selection-start-line="69" selection-start-column="80" selection-end-line="69" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/util/loss.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="116">
@@ -810,13 +858,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="121">
           <caret line="377" selection-start-line="377" selection-end-line="377" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/serialization.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="300" selection-start-line="300" selection-end-line="300" />
         </state>
       </provider>
     </entry>
@@ -837,16 +878,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="149" selection-start-line="149" selection-end-line="149" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/utils/data/dataset.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
@@ -861,7 +892,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/preprocess_feat.py">
+    <entry file="file://$PROJECT_DIR$/src/demo/preprocess/preprocess_feat.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="271">
           <caret line="107" column="48" selection-start-line="107" selection-start-column="48" selection-end-line="107" selection-end-column="48" />
@@ -888,34 +919,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/preprocess_coco.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2736">
-          <caret line="156" column="14" selection-start-line="156" selection-start-column="14" selection-end-line="156" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/util/preprocess.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2451">
           <caret line="134" column="60" selection-start-line="134" selection-start-column="60" selection-end-line="134" selection-end-column="60" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/demo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="45" column="35" lean-forward="true" selection-start-line="18" selection-end-line="45" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#1763#3913#0" />
-            <element signature="e#3978#4631#0" />
           </folding>
         </state>
       </provider>
@@ -955,16 +964,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/util/data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-126">
-          <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/tqdm/_monitor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="125">
@@ -992,16 +991,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/util/sent_lemmatize.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/util/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
@@ -1013,36 +1002,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/demo/demo1_r.py">
+    <entry file="file://$PROJECT_DIR$/src/demo/demo.py" />
+    <entry file="file://$PROJECT_DIR$/src/util/evaluate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="17" column="18" lean-forward="true" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+        <state relative-caret-position="1311">
+          <caret line="69" column="80" lean-forward="true" selection-start-line="69" selection-start-column="80" selection-end-line="69" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/util/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#421#1723#0" />
-            <element signature="e#1770#3636#0" />
-            <element signature="e#3686#7663#0" />
-            <element signature="e#7728#8399#0" />
-            <element signature="e#8520#9973#0" />
-            <element signature="e#10019#23144#0" />
-            <element signature="e#31629#33762#0" />
-            <element signature="e#33915#36616#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/demo/FCModel.py" />
+    <entry file="file://$PROJECT_DIR$/src/demo/preprocess/preprocess_coco.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2964">
+          <caret line="156" column="14" selection-start-line="156" selection-start-column="14" selection-end-line="156" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/serialization.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="300" selection-start-line="300" selection-end-line="300" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1787854931/genericpath.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="44" selection-start-line="44" selection-end-line="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/remote_sources/561458389/1604857847/torch/utils/data/sampler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="149" selection-start-line="149" selection-end-line="149" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="149" selection-start-line="149" selection-end-line="149" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/util/sent_lemmatize.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/demo/demo1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
+        <state relative-caret-position="1711">
           <caret line="503" selection-start-line="503" selection-end-line="503" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <element signature="e#489#1791#0" />
-            <element signature="e#1838#3704#0" />
-            <element signature="e#3754#7731#0" />
-            <element signature="e#7796#8467#0" />
-            <element signature="e#8588#10041#0" />
-            <element signature="e#10087#23212#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/demo/demo1_r.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
