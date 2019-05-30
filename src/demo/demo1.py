@@ -6,7 +6,7 @@ from functools import lru_cache
 
 sys.path.append(os.getcwd())
 sys.path.append('./src')
-sys.path.append(r'/media/wentian/sdb2/work/coco-caption-master')
+sys.path.append(r'coco-caption')
 
 import torch.utils.data
 import h5py
@@ -103,9 +103,11 @@ class CaptionDataset(util.CaptionDataset):
         super().__init__(**kwargs)
 
         if self.dataset_name == 'coco':
-            self.feat_file = r'/media/wentian/nvme0n1p5/work/coco_fc.h5'
+            # self.feat_file = r'/media/wentian/nvme0n1p5/work/coco_fc.h5'
+            self.feat_file = r'../data/feat/coco_fc.h5'
         elif self.dataset_name == 'flickr30k':
-            self.feat_file = r'/media/wentian/nvme0n1p5/work/flickr30k_fc.h5'
+            # elf.feat_file = r'/media/wentian/nvme0n1p5/work/flickr30k_fc.h5'
+            self.feat_file = r'../data/feat/flickr30k_fc.h5'
 
         for sent in self.sentence_list:
             sent.token_ids = [self.vocab.get_index(w) for w in sent.words]
@@ -304,7 +306,7 @@ class DemoPipeline(util.BasePipeline):
             model.load_state_dict(state_dict['model'])
             optimizer.load_state_dict(state_dict['optimizer'])
             scheduler.load_state_dict(state_dict['scheduler'])
-            self.epoch = state_dict['epoch']
+            self.epoch = state_dict['epoch'] + 1
             self.global_step = state_dict['global_step']
             print('starting at epoch {}, global step {}'.format(self.epoch, self.global_step))
 
@@ -328,7 +330,7 @@ class DemoPipeline(util.BasePipeline):
 
             self_critical_flag = (self.epoch >= sc_after and sc_after >= 0)
             if self_critical_flag:
-                util.reward.init_scorer(df='/media/wentian/sdb2/work/image_caption_basics/data/preprocessed/ngram_coco_train_words')
+                util.reward.init_scorer(df='../data/preprocessed/ngram_coco_train_words.p')
 
             for i, batch_data in tqdm(enumerate(train_dataloader), total=len(train_dataloader), ncols=64):
                 image_id, feat, sent_ids, tokens_fixedlen, sent_length, raw = batch_data

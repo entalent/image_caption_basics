@@ -1,9 +1,11 @@
 import json
+import traceback
 
 try:
     from pycocotools.coco import COCO
     from pycocoevalcap.eval import COCOEvalCap
 except:
+    traceback.print_exc()
     print('import from coco-caption failed')
 
 try:
