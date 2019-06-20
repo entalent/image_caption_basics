@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 import util
 import util.reward
-from model.model import *
+from util.model import *
 
 
 class FCModel(nn.Module):

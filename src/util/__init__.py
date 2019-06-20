@@ -104,4 +104,26 @@ def calc_perplexity(log_prob_seq):
     return -1 * s / (n + 1e-12)
 
 
-custom_collate_fn = lambda x: list(zip(*x))
+class Timer:
+    def __init__(self):
+        self.ticks = {}
+        self.times = {}
+
+    def clear(self):
+        self.ticks.clear()
+        self.times.clear()
+
+    def tick(self, event=None):
+        if event is None:
+            event = '_default'
+        self.ticks[event] = time.time()
+
+    def tock(self, event):
+        if event not in self.ticks:
+            return
+        self.times[event] = time.time() - self.ticks[event]
+        del self.ticks[event]
+
+    def get_time(self):
+        return self.times
+

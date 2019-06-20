@@ -47,16 +47,31 @@ class COCOResultGenerator:
         return self.annotation_obj, self.result_obj
 
     def dump_annotation_and_output(self, annotation_file, result_file):
+        self.dump_annotation(annotation_file)
+        self.dump_output(result_file)
+
+    def dump_annotation(self, annotation_file):
         with open(annotation_file, 'w') as f:
             print('dumping {} annotations to {}'.format(len(self.annotation_obj['annotations']), annotation_file))
             dump_func(self.annotation_obj, f, indent=4)
 
+    def dump_output(self, result_file):
         with open(result_file, 'w') as f:
             print('dumping {} results to {}'.format(len(self.result_obj), result_file))
             dump_func(self.result_obj, f, indent=4)
 
+    def add_img_scores(self, img_scores):
+        """
+        :param img_scores: [{'image_id': i, 'Bleu_1': 1, ...}, {'image_id': 0, 'Bleu_1': xx, }]
+                returned by calling eval(ann_file, res_file, True)
+        :return:
+        """
+        img_scores = dict([(i['image_id'], i) for i in img_scores])
+        for item in self.result_obj:
+            item.update(img_scores[item['image_id']])
 
-def eval(ann_file, res_file):
+
+def eval(ann_file, res_file, return_imgscores=False):
     coco = COCO(ann_file)
     cocoRes = coco.loadRes(res_file)
     # create cocoEval object by taking coco and cocoRes
@@ -80,4 +95,7 @@ def eval(ann_file, res_file):
 
     img_scores = [cocoEval.imgToEval[key] for key in cocoEval.imgToEval.keys()]
 
-    return all_score
+    if return_imgscores:
+        return all_score, img_scores
+    else:
+        return all_score

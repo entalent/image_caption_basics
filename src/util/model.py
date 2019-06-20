@@ -45,7 +45,10 @@ class LanguageModel(nn.Module):
             else:
                 word_id_batch = input_sentence[:, i]
 
-            output, state, step_metadata = self.step(input_feature, word_id_batch, state, **kwargs)    # output: (batch_size, vocab_size) WITHOUT SOFTMAX
+            _ret = self.step(input_feature, word_id_batch, state,
+                             **kwargs)  # output: (batch_size, vocab_size) WITHOUT SOFTMAX
+            output, state = _ret[:2]
+
             assert output.shape[0] == batch_size and output.shape[1] == len(self.vocab), \
                 'expected output shape: {}, get shape {}'.format((batch_size, len(self.vocab)), output.shape)
             all_outputs.append(output)
@@ -79,9 +82,10 @@ class LanguageModel(nn.Module):
         all_metadata = []
 
         for t in range(max_length):
-            output, state, step_metadata = self.step(input_feature=input_feature,
+            _ret = self.step(input_feature=input_feature,
                                                      last_word_id_batch=last_word_id_batch,
                                                      last_state=state, **kwargs)
+            output, state = _ret[:2]; step_metadata = _ret[2] if len(_ret) > 2 else None
             log_prob = F.log_softmax(output, -1)    # (batch_size, vocab_size)
 
             if sample_max:
@@ -145,9 +149,10 @@ class LanguageModel(nn.Module):
                     tmp_candidates.append(candidate)
                 else:
                     end_flag = False
-                    output, state, step_metadata = self.step(input_feature=input_feature,
+                    _ret = self.step(input_feature=input_feature,
                                                              last_word_id_batch=[last_word_id],
                                                              last_state=state, **kwargs)
+                    output, state = _ret[:2]; step_metadata = _ret[2] if len(_ret) > 2 else None
 
                     output = F.log_softmax(output, -1).squeeze(0).detach().cpu()  # log of probability
                     output_sorted, index_sorted = torch.sort(output, descending=True)
@@ -172,7 +177,7 @@ class LanguageModel(nn.Module):
         """
         prepare input_feature for next steps
         :param input_feature: original_feature
-        :return: batch_size, prepared_feature
+        :return: batch_size (int), prepared_feature
         """
         return 0, None
 
@@ -194,6 +199,6 @@ class LanguageModel(nn.Module):
         :param last_state: batched
         :return: output (without softmax, shape is [batch_size, vocab_size]),
                  state,
-                 step_metadata
+                 step_metadata (optional, other info in this step, i.e. attention weights)
         """
         return None, None, None
