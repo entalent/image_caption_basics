@@ -136,15 +136,17 @@ def preprocess_ngrams(caption_items, split, vocab):
     return {'document_frequency': ngram_words, 'ref_len': count_imgs}
 
 
-def preprocess_dataset(dataset_name, all_caption_items):
+def preprocess_dataset(dataset_name, all_caption_items, word_count_th=5):
     """
     use this method to preprocess whole dataset (generate vocabulary, tokenize, n-grams for cider)
     :param dataset_name: name of the dataset
     :param all_caption_items: list of CaptionItems.
             The `image` member should be complete.
             The SentenceItem in `sentences` should have `sentence_id` and `raw`, (`words` and `token_ids` can be None)
-    :return:
+    :return: vocabulary, {'dataset': dataset_name, 'caption_items': caption_items}, df
     """
+    # TODO: do not tokenize if `words` are provided in input SentenceItem objects
+
     all_sentence_items = []
     for caption_item in all_caption_items:
         all_sentence_items.extend(caption_item.sentences)
@@ -154,7 +156,8 @@ def preprocess_dataset(dataset_name, all_caption_items):
 
     print('generating vocab and ngrams for dataset {}'.format(dataset_name))
     tokenized_caption_list, vocab_filtered = preprocess_captions(dataset_name,
-                                                                 caption_list=[s.raw for s in all_sentence_items])
+                                                                 caption_list=[s.raw for s in all_sentence_items],
+                                                                 word_count_th=word_count_th)
 
     for i, sent_item in enumerate(all_sentence_items):
         sent_item.words = tokenized_caption_list[i]
@@ -171,6 +174,7 @@ def preprocess_dataset(dataset_name, all_caption_items):
     df_split = 'train'
     print('preprocessing ngrams...')
     df_data = preprocess_ngrams(all_caption_items, split=df_split, vocab=vocab_filtered)
+
     # ngram_file = os.path.join(preprocessed_dataset_path, 'ngram_{}_{}_words.p'.format(dataset_name, df_split))
     # with open(ngram_file, 'wb') as f:
     #     pickle.dump(df_data, f)

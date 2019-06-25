@@ -15,7 +15,7 @@ BeamCandidate = namedtuple('BeamCandidate',
 
 class LanguageModel(nn.Module):
     """
-    abstract class for LSTM based captioning model
+    abstract class for RNN based captioning model
     """
     def __init__(self, **kwargs):
         super().__init__()
@@ -23,6 +23,13 @@ class LanguageModel(nn.Module):
 
     @arg_type(input_sentence=torch.Tensor)
     def forward(self, input_feature, input_sentence, **kwargs):
+        """
+
+        :param input_feature: torch.Tensor or list/tuple of torch.Tensor
+        :param input_sentence: torch.LongTensor
+        :param kwargs: other arguments, including 'ss_prob'
+        :return: output logits, shape: (batch_size, max_len, vocab_size)
+        """
         batch_size, input_feature = self.prepare_feat(input_feature, **kwargs)
         assert len(input_sentence.shape) == 2 and input_sentence.shape[0] == batch_size
         max_length = input_sentence.shape[1]
@@ -58,12 +65,13 @@ class LanguageModel(nn.Module):
 
     def sample(self, input_feature, max_length, sample_max=True, **kwargs):
         """
-
-        :param input_feature:
-        :param max_length:
-        :param sample_max:
+        sample using greedy search (or using torch.multinomial)
+        can be used in evaluation, or self critical training
+        :param input_feature: torch.Tensor or list/tuple of torch.Tensor
+        :param max_length: int, max sentence length
+        :param sample_max: if specified, use greedy search
         :param kwargs:
-        :return: log_prob_seq (torch.Tensor), word_id_seq (np.array), all_metadata (list)
+        :return: log_prob_seq (torch.Tensor), word_id_seq (np.array), all_metadata (list, information collected during `sample`)
         """
 
         start_word_id, end_word_id = self.vocab.start_token_id, self.vocab.end_token_id
@@ -123,10 +131,10 @@ class LanguageModel(nn.Module):
 
     def sample_beam(self, input_feature, max_length, beam_size, **kwargs):
         """
-
-        :param input_feature:
-        :param max_length:
-        :param beam_size:
+        perform beam search
+        :param input_feature: torch.Tensor or list/tuple of torch.Tensor
+        :param max_length: int, max sentence length
+        :param beam_size: candidates to keep at each step
         :param kwargs:
         :return: log_prob_seq (np.array), word_id_seq (np.array), all_metadata (list)
         TODO: change log_prob_seq to torch.Tensor
@@ -149,9 +157,8 @@ class LanguageModel(nn.Module):
                     tmp_candidates.append(candidate)
                 else:
                     end_flag = False
-                    _ret = self.step(input_feature=input_feature,
-                                                             last_word_id_batch=[last_word_id],
-                                                             last_state=state, **kwargs)
+                    _ret = self.step(input_feature=input_feature, last_word_id_batch=[last_word_id],
+                                     last_state=state, **kwargs)
                     output, state = _ret[:2]; step_metadata = _ret[2] if len(_ret) > 2 else None
 
                     output = F.log_softmax(output, -1).squeeze(0).detach().cpu()  # log of probability
@@ -176,17 +183,17 @@ class LanguageModel(nn.Module):
     def prepare_feat(self, input_feature, **kwargs):
         """
         prepare input_feature for next steps
-        :param input_feature: original_feature
-        :return: batch_size (int), prepared_feature
+        :param input_feature: feature from dataloader
+        :return: batch_size (int), prepared_feature (torch.Tensor or list/tuple of torch.Tensor)
         """
         return 0, None
 
     @abstractmethod
     def init_state(self, input_feature, **kwargs):
         """
-        perform steps before feeding <start> token
-        :param input_feature:
-        :return: initial lstm state
+        perform steps before feeding <start> token, i.e. input image in NIC model
+        :param input_feature: return value of `self.prepare_feat`
+        :return: initial RNN state
         """
         pass
 
@@ -194,11 +201,12 @@ class LanguageModel(nn.Module):
     @arg_type(last_word_id_batch=[np.ndarray, list, tuple])
     def step(self, input_feature, last_word_id_batch, last_state, **kwargs):
         """
+        take the previous word as input and output the next word
         :param input_feature: returned by sample_prepare_feat, batched
-        :param last_word_id_batch: batched
+        :param last_word_id_batch: torch.Tensor | np.array | list of int
         :param last_state: batched
         :return: output (without softmax, shape is [batch_size, vocab_size]),
                  state,
-                 step_metadata (optional, other info in this step, i.e. attention weights)
+                 step_metadata (optional, other info in this step, i.e. attention weights to visualize)
         """
         return None, None, None

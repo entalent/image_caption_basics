@@ -66,7 +66,6 @@ class BasePipeline:
         return state_dict
 
 
-
 class SupervisedPipeline(BasePipeline):
     """
     a general training / testing pipeline for supervised learning
