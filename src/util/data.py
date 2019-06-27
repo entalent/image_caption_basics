@@ -80,7 +80,11 @@ class CaptionDataset(torch.utils.data.Dataset):
                 pair = ImageSentencePair(image=caption_item.image, sentence=sent, split=split)
                 self.image_sentence_pair_list.append(pair)
                 self.image_sentence_pair_split[split].append(pair)
-                self.image_sentence_pair_split['all'].append(caption_item)
+                self.image_sentence_pair_split['all'].append(pair)
+
+        for sent in self.sentence_list:
+            sent.token_ids = [self.vocab.get_index(w) for w in sent.words]
+
         print('load used {:.3f}s'.format(time.time() - start_time))
 
         info = []
