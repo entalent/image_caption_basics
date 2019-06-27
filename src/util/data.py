@@ -10,13 +10,23 @@ from .customjson import *
 
 class ImageItem(JSONSerializable):
     def __init__(self, image_id=None, image_filename=None):
+        """
+
+        :param image_id: int
+        :param image_filename: str
+        """
         super().__init__()
         self.image_id, self.image_filename = image_id, image_filename
 
 class SentenceItem(JSONSerializable):
     def __init__(self, sentence_id=None, raw=None, words=None, token_ids=None):
-        # super().__init__()
-        # token_ids can be None
+        """
+
+        :param sentence_id: int
+        :param raw: str
+        :param words: can be None
+        :param token_ids: can be None
+        """
         self.sentence_id, self.raw, self.words, self.token_ids = \
             sentence_id, raw, words, token_ids
 
@@ -64,16 +74,27 @@ class CaptionDataset(torch.utils.data.Dataset):
             split = caption_item.split
             self.image_list.append(caption_item.image)
             self.caption_item_split[split].append(caption_item)
+            self.caption_item_split['all'].append(caption_item)
             self.sentence_list.extend(caption_item.sentences)
             for sent in caption_item.sentences:
                 pair = ImageSentencePair(image=caption_item.image, sentence=sent, split=split)
                 self.image_sentence_pair_list.append(pair)
                 self.image_sentence_pair_split[split].append(pair)
+                self.image_sentence_pair_split['all'].append(caption_item)
         print('load used {:.3f}s'.format(time.time() - start_time))
+
+        info = []
+        for split in self.caption_item_split.keys():
+            info.append('{}: {}'.format(split, len(self.caption_item_split[split])))
+        print('splits: {}'.format(' '.join(info)))
 
         self.image_id_map = dict((image_item.image_id, image_item) for image_item in self.image_list)
         self.sentence_id_map = dict((sentence_item.sentence_id, sentence_item) for sentence_item in self.sentence_list)
         self.image_id_map_2 = dict((caption_item.image.image_id, caption_item) for caption_item in self.caption_item_list)
+        self.sentence_id_map_2 = {}
+        for caption_item in self.caption_item_list:
+            for sent in caption_item.sentences:
+                self.sentence_id_map_2[sent.sentence_id] = caption_item
 
     @abstractmethod
     def __len__(self):
@@ -99,6 +120,9 @@ class CaptionDataset(torch.utils.data.Dataset):
 
     def get_caption_item_by_image_id(self, image_id):
         return self.image_id_map_2[int(image_id)]
+
+    def get_caption_item_by_sentence_id(self, sentence_id):
+        return self.sentence_id_map_2[int(sentence_id)]
 
 
 def read_binary_blob(file_name):

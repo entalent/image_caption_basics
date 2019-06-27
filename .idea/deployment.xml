@@ -5,7 +5,7 @@
       <paths name="mcislab@10.139.21.11:22">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/mcislab/zwt/image_caption_basics" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

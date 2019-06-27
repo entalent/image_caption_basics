@@ -2,6 +2,7 @@ import json
 import numpy as np
 from functools import lru_cache
 
+SERIALIZEABLE_FLAG = '_t'
 
 class JSONSerializable:
     """
@@ -19,20 +20,20 @@ class JSONSerializable:
     def serialize(self):
         class_info = JSONSerializable.cls_info.get(type(self))
         if class_info:
-            data = {'_t': class_info['class_name']}
+            data = {SERIALIZEABLE_FLAG: class_info['class_name']}
             attr_map = class_info['attr_map']
             for k, v in self.__dict__.items():
                 data[attr_map.get(k, k)] = v
             return data
         else:
-            data = {'_t': self.__class__.__name__}
+            data = {SERIALIZEABLE_FLAG: self.__class__.__name__}
             for k, v in self.__dict__.items():
                 data[k] = v
             return data
 
     @staticmethod
     def deserialize(d):
-        class_name = d['_t']
+        class_name = d[SERIALIZEABLE_FLAG]
 
         cls = JSONSerializable.cls_name_map[class_name]
         cls_info = JSONSerializable.cls_info[cls]
@@ -40,7 +41,7 @@ class JSONSerializable:
         name_map = cls_info['name_map']
         obj = cls()
         for k, v in d.items():
-            if k == '_t':
+            if k == SERIALIZEABLE_FLAG:
                 pass
             obj.__dict__[name_map.get(k, k)] = v
         return obj
@@ -50,8 +51,8 @@ class JSONSerializable:
         """
 
         :param cls: another class that inherited this class
-        :param class_name: abbreviation for the name of the class, used in serialize
-        :param attr_abbreviation: abbreviation for the name of all fields, used in serialize
+        :param class_name: abbreviation for the name of the class, used in serialize/deserialize
+        :param attr_abbreviation: abbreviation for the name of class members, used in serialize/deserialize
         :return: None
         """
         if class_name is None:
@@ -63,7 +64,7 @@ class JSONSerializable:
             'name {} has been registered for class {}'.format(class_name,
                                                               JSONSerializable.cls_name_map[class_name].__name__)
         # kept field
-        assert '_t' not in attr_abbreviation.keys() and '_t' not in attr_abbreviation.values(), \
+        assert SERIALIZEABLE_FLAG not in attr_abbreviation.keys() and SERIALIZEABLE_FLAG not in attr_abbreviation.values(), \
             'illegal field name or abbreviation used'
 
         info = {'class_name': class_name, 'attr_map': attr_abbreviation}
@@ -100,22 +101,22 @@ def _json_deserialize(obj):
     else:
         return obj
 
-def load_custom(fp):
+def load_custom(fp, **kwargs):
     if isinstance(fp, str):
         with open(fp, 'r') as f:
-            return json.load(f, object_hook=_json_deserialize)
+            return json.load(f, object_hook=_json_deserialize, **kwargs)
     else:
-        return json.load(fp, object_hook=_json_deserialize)
+        return json.load(fp, object_hook=_json_deserialize, **kwargs)
 
-def loads_custom(s, encoding=None):
-    return json.loads(s, encoding=encoding, object_hook=_json_deserialize)
+def loads_custom(s, encoding=None, **kwargs):
+    return json.loads(s, encoding=encoding, object_hook=_json_deserialize, **kwargs)
 
-def dump_custom(obj, fp, indent=None, separators=None):
+def dump_custom(obj, fp, **kwargs):
     if isinstance(fp, str):
         with open(fp, 'w') as f:
-            return json.dump(obj, f, indent=indent, separators=separators, default=_json_serialize)
+            return json.dump(obj, f, default=_json_serialize, **kwargs)
     else:
-        return json.dump(obj, fp, indent=indent, separators=separators, default=_json_serialize)
+        return json.dump(obj, fp, default=_json_serialize, **kwargs)
 
-def dumps_custom(obj, indent=None, separators=None):
-    return json.dumps(obj, indent=indent, separators=separators, default=_json_serialize)
+def dumps_custom(obj, **kwargs):
+    return json.dumps(obj, default=_json_serialize, **kwargs)
