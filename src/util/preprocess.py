@@ -15,7 +15,7 @@ def default_tokenize_func(sent):
 
 
 def preprocess_captions(dataset_name, caption_list, word_count_th=5, tokenize_func=default_tokenize_func):
-    print('preprocessing dataset {}'.format(dataset_name))
+    print('preprocessing captions in dataset {}'.format(dataset_name))
     word_counter = Counter()
     sentence_length_counter = Counter()
 
@@ -124,8 +124,8 @@ def preprocess_ngrams(caption_items, split, vocab):
         if split == caption_item.split or split == 'all':
             ref_words = []
             for sent in caption_item.sentences:
-                tmp_tokens = sent.words + [Vocabulary.end_token_id]
-                tmp_tokens = [_ if _ in vocab.word2idx else Vocabulary.unk_token for _ in tmp_tokens]
+                tmp_tokens = sent.words + [Vocabulary.end_token]    # must add <end> token
+                tmp_tokens = [_ if _ in vocab.word2idx else Vocabulary.unk_token for _ in tmp_tokens]   # filter unknown words
                 ref_words.append(' '.join(tmp_tokens))
             refs_words.append(ref_words)
             count_imgs += 1
@@ -135,3 +135,49 @@ def preprocess_ngrams(caption_items, split, vocab):
     ngram_words = compute_doc_freq(create_crefs(refs_words))
     return {'document_frequency': ngram_words, 'ref_len': count_imgs}
 
+
+def preprocess_dataset(dataset_name, all_caption_items, word_count_th=5):
+    """
+    use this method to preprocess whole dataset (generate vocabulary, tokenize, n-grams for cider)
+    :param dataset_name: name of the dataset
+    :param all_caption_items: list of CaptionItems.
+            The `image` member should be complete.
+            The SentenceItem in `sentences` should have `sentence_id` and `raw`, (`words` and `token_ids` can be None)
+    :return: vocabulary, {'dataset': dataset_name, 'caption_items': caption_items}, df
+    """
+    # TODO: do not tokenize if `words` are provided in input SentenceItem objects
+
+    all_sentence_items = []
+    for caption_item in all_caption_items:
+        all_sentence_items.extend(caption_item.sentences)
+
+    print('==== saving dataset {}'.format(dataset_name))
+    print('total {} images, {} sentences'.format(len(all_caption_items), len(all_sentence_items)))
+
+    print('generating vocab and ngrams for dataset {}'.format(dataset_name))
+    tokenized_caption_list, vocab_filtered = preprocess_captions(dataset_name,
+                                                                 caption_list=[s.raw for s in all_sentence_items],
+                                                                 word_count_th=word_count_th)
+
+    for i, sent_item in enumerate(all_sentence_items):
+        sent_item.words = tokenized_caption_list[i]
+
+    # vocab_file = os.path.join(vocab_save_path, 'vocab_{}.json'.format(dataset_name))
+    # dump_custom(vocab_filtered, vocab_file)
+    # print('saved vocab to {}, total {} words'.format(vocab_file, len(vocab_filtered)))
+
+    # dataset_file = os.path.join(preprocessed_dataset_path, 'dataset_{}.json'.format(dataset_name))
+    # print('total {} images'.format(len(all_caption_items)))
+    # dump_custom({'dataset': dataset_name, 'caption_item': all_caption_items}, dataset_file)
+    # print('saved preprocessed dataset to {}'.format(dataset_file))
+
+    df_split = 'train'
+    print('preprocessing ngrams...')
+    df_data = preprocess_ngrams(all_caption_items, split=df_split, vocab=vocab_filtered)
+
+    # ngram_file = os.path.join(preprocessed_dataset_path, 'ngram_{}_{}_words.p'.format(dataset_name, df_split))
+    # with open(ngram_file, 'wb') as f:
+    #     pickle.dump(df_data, f)
+    # print('preprocessed ngram, dumped to {}'.format(ngram_file))
+
+    return vocab_filtered, {'dataset': dataset_name, 'caption_item': all_caption_items}, df_data
