@@ -154,6 +154,9 @@ class SupervisedPipeline(BasePipeline):
         pass
 
     def save_model(self, save_path, state_dict):
+        if state_dict is None:
+            print('state_dict not saved')
+            return
         state_dict['global_step'] = self.global_step
         state_dict['epoch'] = self.epoch
         super().save_model(save_path, state_dict)
